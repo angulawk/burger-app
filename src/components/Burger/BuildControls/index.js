@@ -21,7 +21,14 @@ const controls = [
   }
 ];
 
-const BuildControls = ({ onAdd, onRemove, disabled, price, purchasable }) => (
+const BuildControls = ({
+  onAdd,
+  onRemove,
+  disabled,
+  price,
+  purchasable,
+  orderBurger
+}) => (
   <BuildControls.Container>
     <p>Current Price: {price.toFixed(2)}</p>
     {controls.map(control => (
@@ -34,7 +41,9 @@ const BuildControls = ({ onAdd, onRemove, disabled, price, purchasable }) => (
         disabled={disabled[control.type]}
       />
     ))}
-    <BuildControls.OrderButton disabled={!purchasable}>Order Now</BuildControls.OrderButton>
+    <BuildControls.OrderButton disabled={!purchasable} onClick={orderBurger}>
+      Order Now
+    </BuildControls.OrderButton>
   </BuildControls.Container>
 )
 
