@@ -4,7 +4,8 @@ import Button from "../../UI/Button";
 function OrderSummary({
   ingredients,
   calcelPurchase,
-  continuePurchase
+  continuePurchase,
+  price
 }) {
   const ingredientSummary = Object.keys(ingredients)
     .map(ingredientKey => {
@@ -20,6 +21,7 @@ function OrderSummary({
       <ul>
         { ingredientSummary }
       </ul>
+      <p><strong>Total Price: {price.toFixed(2)}</strong></p>
       <p>Continue to check out</p>
       <Button clicked={calcelPurchase} btnType="danger">CANCEL</Button>
       <Button clicked={continuePurchase} btnType="success">CONTINUE</Button>

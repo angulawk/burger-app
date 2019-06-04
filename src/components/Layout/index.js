@@ -1,9 +1,13 @@
 import React, { Fragment } from 'react';
 import styled from "styled-components";
+import Toolbar from "../Navigation/Toolbar";
+import SideDrawer from "../Navigation/SideDrawer";
 
 const Layout = ({ children }) => (
   <Fragment>
-    <div>Toolbar, SideDrawer, Backdrop</div>
+    <Toolbar />
+    <SideDrawer />
+    <div>Backdrop</div>
     <Layout.MainContent>
       {children}
     </Layout.MainContent>
@@ -11,7 +15,7 @@ const Layout = ({ children }) => (
 );
 
 Layout.MainContent = styled.div`
-  margin-top: 16px;
+  margin-top: 72px;
 `;
 
 export default Layout;

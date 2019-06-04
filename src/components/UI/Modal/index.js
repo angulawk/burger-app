@@ -1,11 +1,18 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled, {css} from "styled-components";
+import Backdrop from "../Backdrop";
 
-const Modal = ({ children, isVisible }) => (
-  <Modal.Container isVisible={isVisible}>
-    {children}
-  </Modal.Container>
-)
+const Modal = ({ children, isVisible, modalClosed }) => {
+  console.log("isVisible", isVisible);
+  return (
+    <Fragment>
+      <Backdrop show={isVisible} onClick={modalClosed}/>
+      <Modal.Container isVisible={isVisible}>
+        {children}
+      </Modal.Container>
+    </Fragment>
+  )
+}
 
 Modal.Container = styled.div`
   ${({
