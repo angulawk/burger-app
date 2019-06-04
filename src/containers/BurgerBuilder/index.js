@@ -106,7 +106,7 @@ class BurgerBuilder extends Component {
 
     return (
       <Fragment>
-        <Modal isVisible={this.state.isOrderModalVisible}>
+        <Modal isVisible={this.state.isOrderModalVisible} modalClosed={this.purchaseCancelHandler}>
           <OrderSummary
             ingredients={this.state.ingredients}
             calcelPurchase={this.purchaseCancelHandler}

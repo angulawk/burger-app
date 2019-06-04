@@ -18,25 +18,33 @@ NavigationItem.Container = styled.li`
   box-sizing: border-box;
   display: flex;
   height: 100%;
+  width: 100%;
   align-items: center;
 
   @media (min-width: 500px) {
     margin: 10px 0;
-    width: 100%;
+    width: auto;
     display: block;
   }
 `;
 
 const activeStyles = css`
-  background-color: #000;
+  background-color: #FFF;
   border-bottom: 4px solid #40A4C8;
-  color: #FFF;
+  color: #000;
+`
+
+const activeMobileStyles = css`
+  background-color: #FFF;
+  border-bottom: 4px solid transparent;
+  color: #40A4C8;
 `
 
 NavigationItem.LinkContainer = styled.a`
-  color: #FFF;
+  color: #000;
   text-decoration: none;
   height: 100%;
+  width: 100%;
   padding: 16px 10px;
   border-bottom: 4px solid transparent;
   box-sizing: border-box;
@@ -44,13 +52,22 @@ NavigationItem.LinkContainer = styled.a`
 
   :hover,
   :active {
-    ${activeStyles}
+    ${activeMobileStyles}
+
+    @media (min-width: 500px) {
+      ${activeStyles}
+    }
   }
 
-  ${({ active }) => active && activeStyles}
+  ${({ active }) => active && activeMobileStyles}
 
   @media (min-width: 500px) {
-    width: 100%;
+    ${({ active }) => active && activeStyles}
+  }
+
+  @media (min-width: 500px) {
+    width: auto;
+    border-bottom: 0;
   }
 `;
 

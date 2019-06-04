@@ -32,6 +32,11 @@ Toolbar.Container = styled.header`
 
 Toolbar.Navigation = styled.nav`
   height: 100%;
+  display: none;
+
+  @media(min-width: 500px) {
+    display: block;
+  }
 `;
 
 Toolbar.LogoContainer = styled.div`

@@ -1,18 +1,22 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 import Logo from "../../Logo";
 import NavigationItems from "../NavigationItems";
+import Backdrop from "../../UI/Backdrop";
 
 function SideDrawer() {
   return (
-    <SideDrawer.Container>
-      <SideDrawer.LogoContainer>
-        <Logo />
-      </SideDrawer.LogoContainer>      
-      <SideDrawer.NavigationContainer>
-        <NavigationItems />
-      </SideDrawer.NavigationContainer>
-    </SideDrawer.Container>
+    <Fragment>
+      <Backdrop />
+      <SideDrawer.Container>
+        <SideDrawer.LogoContainer>
+          <Logo />
+        </SideDrawer.LogoContainer>      
+        <SideDrawer.NavigationContainer>
+          <NavigationItems />
+        </SideDrawer.NavigationContainer>
+      </SideDrawer.Container>
+    </Fragment>
   )
 }
 
@@ -45,7 +49,8 @@ SideDrawer.Container = styled.div`
 SideDrawer.NavigationContainer = styled.nav``;
 
 SideDrawer.LogoContainer = styled.div`
-  height: 11%
+  height: 11%;
+  margin-bottom: 32px;
 `;
 
 export default SideDrawer;
