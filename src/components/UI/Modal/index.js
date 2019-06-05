@@ -3,7 +3,6 @@ import styled, {css} from "styled-components";
 import Backdrop from "../Backdrop";
 
 const Modal = ({ children, isVisible, modalClosed }) => {
-  console.log("isVisible", isVisible);
   return (
     <Fragment>
       <Backdrop show={isVisible} onClick={modalClosed}/>

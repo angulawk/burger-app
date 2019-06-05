@@ -1,26 +1,30 @@
 import React, { Fragment } from "react";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import Logo from "../../Logo";
 import NavigationItems from "../NavigationItems";
 import Backdrop from "../../UI/Backdrop";
 
-function SideDrawer() {
+function SideDrawer({
+  closeSideDrawer,
+  showSideDrawer
+}) {
   return (
     <Fragment>
-      <Backdrop />
-      <SideDrawer.Container>
-        <SideDrawer.LogoContainer>
-          <Logo />
-        </SideDrawer.LogoContainer>      
-        <SideDrawer.NavigationContainer>
-          <NavigationItems />
-        </SideDrawer.NavigationContainer>
-      </SideDrawer.Container>
+      <Backdrop show={showSideDrawer} onClick={closeSideDrawer} />
+        <SideDrawer.Container showSideDrawer={showSideDrawer}>
+          <SideDrawer.LogoContainer>
+            <Logo />
+          </SideDrawer.LogoContainer>      
+          <SideDrawer.NavigationContainer>
+            <NavigationItems />
+          </SideDrawer.NavigationContainer>
+        </SideDrawer.Container>
     </Fragment>
   )
 }
 
 SideDrawer.Container = styled.div`
+${({ showSideDrawer }) => css`
   position: fixed;
   width: 280px;
   max-width: 70%;
@@ -31,20 +35,13 @@ SideDrawer.Container = styled.div`
   background-color: #FFF;
   padding: 32px 16px;
   box-sizing: border-box;
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  transform: ${showSideDrawer ? "translateX(0)" : "translateX(-100%)"};
 
   @media(min-width: 500px) {
     display: none;
   }
-
-  .open {
-    transform: translateX(0);
-  }
-
-  .close {
-    transform: translateX(-100%);
-  }
-`;
+`}`;
 
 SideDrawer.NavigationContainer = styled.nav``;
 
