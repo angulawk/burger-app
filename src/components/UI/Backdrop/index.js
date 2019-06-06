@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Backdrop = ({ show, onClick }) => {
-  console.log("show", show);
   return (
     show ? <Backdrop.Container onClick={onClick}>
       <p>Backdrop Container</p>

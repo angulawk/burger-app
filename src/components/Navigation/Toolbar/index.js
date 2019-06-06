@@ -2,10 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Logo from "../../Logo";
 import NavigationItems from "../NavigationItems";
+import hamburger from "../../../assets/images/hamburger.png";
 
-const Toolbar = () => (
+const Toolbar = ({onClick}) => (
   <Toolbar.Container>
-    <div>MENU</div>
+    <Toolbar.HamburgerContainer onClick={onClick}>
+      <Toolbar.ImageHamburger src={hamburger} alt="MyBurger"/>
+    </Toolbar.HamburgerContainer>
     <Toolbar.LogoContainer>
       <Logo />
     </Toolbar.LogoContainer>
@@ -37,6 +40,12 @@ Toolbar.Navigation = styled.nav`
   @media(min-width: 500px) {
     display: block;
   }
+`;
+
+Toolbar.HamburgerContainer = styled.a``;
+Toolbar.ImageHamburger = styled.img`
+  width: 50px;
+  height: 50px;
 `;
 
 Toolbar.LogoContainer = styled.div`
