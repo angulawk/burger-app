@@ -23,9 +23,8 @@ class Layout extends Component {
       <Fragment>
         <Toolbar onClick={this.sideDrawerToggleHandler} />
         <SideDrawer showSideDrawer={this.state.showSideDrawer} closeSideDrawer={this.sideDrawerCloseHandler} />
-        <div>Backdrop</div>
         <Layout.MainContent>
-          {this.children}
+          {this.props.children}
         </Layout.MainContent>
       </Fragment>
     )

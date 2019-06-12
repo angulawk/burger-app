@@ -1,4 +1,10 @@
-import React, { Component, Fragment } from "react";
+import React, {
+  Component, 
+  Fragment, 
+  useState, 
+  useMemo 
+} from "react";
+
 import Burger from "../../components/Burger";
 import BuildControls from "../../components/Burger/BuildControls";
 import Modal from "../../components/UI/Modal";
@@ -11,52 +17,57 @@ const INGREDIENT_PRICES = {
   bacon: 0.7
 }
 
-class BurgerBuilder extends Component {
-  state = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0
-    },
-    totalPrice: 4,
-    purchasable: false,
-    isOrderModalVisible: false
-  }
+function BurgerBuilder() {
+  const [ingredients, setIngredients] = useState({
+    salad: 0,
+    bacon: 0,
+    cheese: 0,
+    meat: 0
+  });
 
-  updatePurchaseState(ingredients) {
+  const [totalPrice, setTotalPrice] = useState(4);
+  const [purchasable, setPurchasable] = useState(false);
+  const [isOrderModalVisible, setOrderModalVisiblity] = useState(false);
+
+  const memoizedOrderSummaryProps = useMemo(
+    () => ({
+        ingredients,
+        cancelPurchase: purchaseCancelHandler,
+        continuePurchase: purchaseContinueHandler,
+        price: totalPrice
+    }),
+    [isOrderModalVisible]
+  );
+
+  function updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
       .map(ingredientKey => ingredients[ingredientKey])
       .reduce((sum, el) => {
         return sum + el;
       })
 
-    this.setState({
-      purchasable: sum > 0
-    })
+    setPurchasable(sum > 0)
   }
 
-  addIngredientHandler = (type) => {
-    const oldCount = this.state.ingredients[type];
+  function addIngredientHandler(type) {
+    const oldCount = ingredients[type];
     const updatedCount = oldCount + 1;
 
-    const updatedIngredients = { ...this.state.ingredients }
+    const updatedIngredients = { ...ingredients }
     updatedIngredients[type] = updatedCount;
 
     const priceAddition = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
+    const oldPrice = totalPrice;
     const newPrice = oldPrice + priceAddition;
 
-    this.setState({
-      totalPrice: newPrice,
-      ingredients: updatedIngredients
-    });
+    setTotalPrice(newPrice);
+    setIngredients(updatedIngredients);
 
-    this.updatePurchaseState(updatedIngredients);
+    updatePurchaseState(updatedIngredients);
   }
 
-  removeIngredientHandler = (type) => {
-    const oldCount = this.state.ingredients[type];
+  function removeIngredientHandler(type) {
+    const oldCount = ingredients[type];
 
     if(oldCount <= 0) {
       return;
@@ -64,68 +75,55 @@ class BurgerBuilder extends Component {
 
     const updatedCount = oldCount - 1;
 
-    const updatedIngredients = { ...this.state.ingredients }
+    const updatedIngredients = { ...ingredients }
     updatedIngredients[type] = updatedCount;
 
     const priceDeduction = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
+    const oldPrice = totalPrice;
     const newPrice = oldPrice - priceDeduction;
 
-    this.setState({
-      totalPrice: newPrice,
-      ingredients: updatedIngredients
-    });
+    setTotalPrice(newPrice);
+    setIngredients(updatedIngredients);
 
-    this.updatePurchaseState(updatedIngredients);
+    updatePurchaseState(updatedIngredients);
   }
 
-  purchaseHandler = () => {
-    this.setState({
-      isOrderModalVisible: true
-    })
+  function purchaseHandler() {
+    setOrderModalVisiblity(true);
   }
 
-  purchaseCancelHandler = () => {
-    this.setState({
-      isOrderModalVisible: false
-    })
+  function purchaseCancelHandler() {
+    setOrderModalVisiblity(false);
   }
 
-  purchaseContinueHandler = () => {
+  function purchaseContinueHandler() {
     alert("You continue")
   }
 
-  render() {
-    const disabledInfo = {
-      ...this.state.ingredients
-    }
-
-    for(let key in disabledInfo) {
-      disabledInfo[key] = disabledInfo[key] <= 0
-    }
-
-    return (
-      <Fragment>
-        <Modal isVisible={this.state.isOrderModalVisible} modalClosed={this.purchaseCancelHandler}>
-          <OrderSummary
-            ingredients={this.state.ingredients}
-            calcelPurchase={this.purchaseCancelHandler}
-            continuePurchase={this.purchaseContinueHandler}
-            price={this.state.totalPrice}
-          />
-        </Modal>
-        <Burger ingredients={this.state.ingredients} />
-        <BuildControls
-          onAdd={this.addIngredientHandler}
-          onRemove={this.removeIngredientHandler}
-          disabled={disabledInfo}
-          price={this.state.totalPrice}
-          purchasable={this.state.purchasable}
-          orderBurger={this.purchaseHandler}
-        />
-      </Fragment>
-    );
+  const disabledInfo = {
+    ...ingredients
   }
+
+  for(let key in disabledInfo) {
+    disabledInfo[key] = disabledInfo[key] <= 0
+  }
+
+  return (
+    <Fragment>
+      <Modal isVisible={isOrderModalVisible} modalClosed={purchaseCancelHandler}>
+        <OrderSummary {...memoizedOrderSummaryProps}/>
+      </Modal>
+      <Burger ingredients={ingredients} />
+      <BuildControls
+        onAdd={addIngredientHandler}
+        onRemove={removeIngredientHandler}
+        disabled={disabledInfo}
+        price={totalPrice}
+        purchasable={purchasable}
+        orderBurger={purchaseHandler}
+      />
+    </Fragment>
+  );
 }
 
 export default BurgerBuilder;

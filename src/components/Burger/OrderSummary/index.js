@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment, memo } from "react";
 import Button from "../../UI/Button";
 
 function OrderSummary({
   ingredients,
-  calcelPurchase,
+  cancelPurchase,
   continuePurchase,
   price
 }) {
@@ -23,10 +23,10 @@ function OrderSummary({
       </ul>
       <p><strong>Total Price: {price.toFixed(2)}</strong></p>
       <p>Continue to check out</p>
-      <Button clicked={calcelPurchase} btnType="danger">CANCEL</Button>
+      <Button clicked={cancelPurchase} btnType="danger">CANCEL</Button>
       <Button clicked={continuePurchase} btnType="success">CONTINUE</Button>
     </Fragment>
   )
 }
 
-export default OrderSummary;
+export default memo(OrderSummary);

@@ -3,9 +3,7 @@ import styled from "styled-components";
 
 const Backdrop = ({ show, onClick }) => {
   return (
-    show ? <Backdrop.Container onClick={onClick}>
-      <p>Backdrop Container</p>
-    </Backdrop.Container> : null
+    show ? <Backdrop.Container onClick={onClick} /> : null
   )
 }
 

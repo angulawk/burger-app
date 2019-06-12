@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import Backdrop from "../Backdrop";
 
 const Modal = ({ children, isVisible, modalClosed }) => {
