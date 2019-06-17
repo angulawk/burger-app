@@ -22,7 +22,7 @@ ${({
   margin: 10px;
   font-weight: bold;
   color: #FFFFFF;
-  background-color: ${(btnType === "danger") ? "#944317;" : "#5C9210;"}`}
+  background-color: ${(btnType === "danger") ? "#DD2C00;" : "#00C853;"}`}
 `;
 
 export default Button;
