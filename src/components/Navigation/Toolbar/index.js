@@ -42,7 +42,13 @@ Toolbar.Navigation = styled.nav`
   }
 `;
 
-Toolbar.HamburgerContainer = styled.a``;
+Toolbar.HamburgerContainer = styled.a`
+  display: block;
+
+  @media(min-width: 500px) {
+    display: none;
+  }
+`;
 Toolbar.ImageHamburger = styled.img`
   width: 50px;
   height: 50px;
