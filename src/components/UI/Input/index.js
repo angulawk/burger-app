@@ -1,18 +1,18 @@
 import React, {Fragment} from "react";
 import styled from "styled-components";
 
-const Input = (props, {label, inputType}) => {
+const Input = ({label, elementType, elementConfig, value}) => {
   let inputElem = null;
 
-  switch (inputType) {
+  switch (elementType) {
     case "input":
-      inputElem = <Input.Container {...props} />;
+      inputElem = <Input.Container {...elementConfig} value={value} />;
       break;
     case "textarea":
-      inputElem = <Input.TextArea {...props} />;
+      inputElem = <Input.TextArea {...elementConfig} value={value} />;
       break;
     default:
-      inputElem = <Input.Container {...props} />;
+      inputElem = <Input.Container {...elementConfig} value={value} />;
       break;
   }
   return (

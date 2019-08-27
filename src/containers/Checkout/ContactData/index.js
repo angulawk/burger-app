@@ -6,12 +6,66 @@ import Spinner from "../../../components/UI/Spinner";
 import Input from "../../../components/UI/Input";
 
 const ContactData = ({ingredients, price}) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState({
-    street: "",
-    postalCode: ""
+  const [username, setUsername] = useState({
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      placeholder: "Your name"
+    },
+    value: ""
   });
+  const [email, setEmail] = useState({
+    elementType: "email",
+    elementConfig: {
+      type: "text",
+      placeholder: "Your email"
+    },
+    value: ""
+  });
+  const [address, setAddress] = useState({
+    street: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Street"
+      },
+      value: ""
+    },
+    postalCode: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Postal code"
+      },
+      value: ""
+    },
+    country: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Country"
+      },
+      value: ""
+    }
+  });
+
+  const [deliveryMethod, setDeliveryMethod] = useState({
+    elementType: "select",
+    elementConfig: {
+      options: [
+        {
+          value: "fastest",
+          displayValue: "Fastest"
+        },
+        {
+          value: "cheapest",
+          displayValue: "Cheapest"
+        }
+      ]
+    },
+    value: ""
+  });
+
   const [loading, setLoading] = useState(false);
 
   function orderHandler(event) {
@@ -43,12 +97,7 @@ const ContactData = ({ingredients, price}) => {
 
   let form = (
     <ContactData.Form action="">
-      <Input
-        inputType="input"
-        type="text"
-        name="name"
-        placeholder="Your name"
-      />
+      <Input elementType="" elementConfig="" value="" />
       <Input
         inputType="input"
         type="email"
