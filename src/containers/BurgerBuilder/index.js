@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useEffect, useState, useMemo} from "react";
+import React, {Fragment, useEffect, useState, useMemo} from "react";
 
 import Burger from "../../components/Burger";
 import BuildControls from "../../components/Burger/BuildControls";
@@ -15,7 +15,7 @@ const INGREDIENT_PRICES = {
   bacon: 0.7
 };
 
-function BurgerBuilder() {
+function BurgerBuilder({history}) {
   const [ingredients, setIngredients] = useState(null);
 
   const [totalPrice, setTotalPrice] = useState(4);
@@ -36,7 +36,7 @@ function BurgerBuilder() {
 
   useEffect(() => {
     axios
-      .get("https://burger-app-24365.firebaseio.com/ingredients.json", {
+      .get("ingredients.json", {
         headers: {
           "Access-Control-Allow-Origin": "*"
         }
@@ -105,30 +105,19 @@ function BurgerBuilder() {
   }
 
   function purchaseContinueHandler() {
-    setLoading(true);
-    const order = {
-      ingredients,
-      price: totalPrice,
-      customer: {
-        name: "Aga Wojcik",
-        address: {
-          street: "Test",
-          zipCode: "41400",
-          country: "Poland"
-        }
-      }
-    };
+    let queryParams = [];
 
-    axios
-      .post("/orders.json", order)
-      .then(response => {
-        setLoading(false);
-        setOrderModalVisiblity(false);
-      })
-      .catch(error => {
-        setLoading(false);
-        setOrderModalVisiblity(false);
-      });
+    for (let i in ingredients) {
+      queryParams.push(`${encodeURIComponent(i)}=${ingredients[i]}`);
+    }
+
+    queryParams.push(`price=${totalPrice}`);
+    const queryString = queryParams.join("&");
+
+    history.push({
+      pathname: "/checkout",
+      search: `?${queryString}`
+    });
   }
 
   const disabledInfo = {

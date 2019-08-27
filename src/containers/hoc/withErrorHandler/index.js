@@ -11,12 +11,13 @@ function withErrorHandler(WrappedComponent, axios) {
         return req;
       });
 
-      axios.interceptors.response.use(
-        res => res,
-        error => {
-          setError(error);
+      async function errorResponseHandler(error) {
+        if (error) {
+          await setError(error);
         }
-      );
+      }
+
+      axios.interceptors.response.use(response => {}, errorResponseHandler);
     });
 
     function errorConfirmedHandler() {
