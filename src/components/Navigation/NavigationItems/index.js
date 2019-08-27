@@ -4,10 +4,10 @@ import NavigationItem from "./NavigationItem";
 
 const NavigationItems = () => (
   <NavigationItems.Container>
-    <NavigationItem link="/" active>Burger Builder</NavigationItem>
-    <NavigationItem link="/">Checkout</NavigationItem>
+    <NavigationItem link="/">Burger Builder</NavigationItem>
+    <NavigationItem link="/orders">Orders</NavigationItem>
   </NavigationItems.Container>
-)
+);
 
 NavigationItems.Container = styled.ul`
   margin: 0;
@@ -18,7 +18,7 @@ NavigationItems.Container = styled.ul`
   align-items: center;
   height: 100%;
 
-  @media(min-width: 500px) {
+  @media (min-width: 500px) {
     flex-flow: row wrap;
   }
 `;
