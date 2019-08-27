@@ -3,6 +3,7 @@ import Button from "../../../components/UI/Button";
 import styled from "styled-components";
 import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner";
+import Input from "../../../components/UI/Input";
 
 const ContactData = ({ingredients, price}) => {
   const [username, setUsername] = useState("");
@@ -42,10 +43,25 @@ const ContactData = ({ingredients, price}) => {
 
   let form = (
     <ContactData.Form action="">
-      <input type="text" name="name" placeholder="Your name" />
-      <input type="email" name="email" placeholder="Your email" />
-      <input type="text" name="street" placeholder="Street" />
-      <input type="text" name="postal" placeholder="Postalcode" />
+      <Input
+        inputType="input"
+        type="text"
+        name="name"
+        placeholder="Your name"
+      />
+      <Input
+        inputType="input"
+        type="email"
+        name="email"
+        placeholder="Your email"
+      />
+      <Input inputType="input" type="text" name="street" placeholder="Street" />
+      <Input
+        inputType="input"
+        type="text"
+        name="postal"
+        placeholder="Postalcode"
+      />
       <Button btnType="success" clicked={orderHandler}>
         Order
       </Button>
@@ -74,10 +90,6 @@ ContactData.Form = styled.form`
   justify-content: center;
   align-items: center;
   flex-flow: column nowrap;
-
-  input {
-    margin: 10px 0;
-  }
 `;
 
 export default ContactData;
