@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Button from "../../../components/UI/Button";
 import styled from "styled-components";
 import axios from "../../../axios-orders";
@@ -90,6 +90,13 @@ const ContactData = ({ingredients, price}) => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [isFormValid, setFormValidation] = useState(false);
+
+  useEffect(() => {
+    for (let order in orderForm) {
+      setFormValidation(orderForm[order].valid);
+    }
+  }, [orderForm]);
 
   function orderHandler(event) {
     event.preventDefault();
@@ -100,21 +107,25 @@ const ContactData = ({ingredients, price}) => {
       customer[order] = orderForm[order].value;
     }
 
-    setLoading(true);
     const order = {
       ingredients,
       price,
       customer
     };
 
-    axios
-      .post("/orders.json", order)
-      .then(response => {
-        setLoading(false);
-      })
-      .catch(error => {
-        setLoading(false);
-      });
+    console.log("orderForm", orderForm);
+
+    if (isFormValid) {
+      setLoading(true);
+      axios
+        .post("/orders.json", order)
+        .then(response => {
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+        });
+    }
   }
 
   let orderFormArray = [];
@@ -127,19 +138,17 @@ const ContactData = ({ingredients, price}) => {
   }
 
   function checkValidity(value, rules) {
-    let isValid = false;
-
     if (rules.required) {
-      isValid = value.trim() !== "";
+      setFormValidation(value.trim() !== "");
     }
 
-    return isValid;
+    return isFormValid;
   }
 
-  function inputChangeHandler(event, inputField) {
+  async function inputChangeHandler(event, inputField) {
     const currentInput = orderFormArray.find(order => order.id === inputField);
 
-    setOrderForm({
+    await setOrderForm({
       ...orderForm,
       [currentInput.id]: {
         ...orderForm[inputField],
@@ -151,7 +160,7 @@ const ContactData = ({ingredients, price}) => {
       }
     });
 
-    console.log("orderForm", orderForm);
+    return orderForm;
   }
 
   let form = (
