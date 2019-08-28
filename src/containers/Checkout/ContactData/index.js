@@ -13,7 +13,11 @@ const ContactData = ({ingredients, price}) => {
         type: "text",
         placeholder: "Your name"
       },
-      value: ""
+      value: "",
+      validation: {
+        required: true
+      },
+      valid: false
     },
     email: {
       elementType: "email",
@@ -21,7 +25,11 @@ const ContactData = ({ingredients, price}) => {
         type: "text",
         placeholder: "Your email"
       },
-      value: ""
+      value: "",
+      validation: {
+        required: true
+      },
+      valid: false
     },
     street: {
       elementType: "input",
@@ -29,7 +37,11 @@ const ContactData = ({ingredients, price}) => {
         type: "text",
         placeholder: "Street"
       },
-      value: ""
+      value: "",
+      validation: {
+        required: true
+      },
+      valid: false
     },
     postalCode: {
       elementType: "input",
@@ -37,7 +49,11 @@ const ContactData = ({ingredients, price}) => {
         type: "text",
         placeholder: "Postal code"
       },
-      value: ""
+      value: "",
+      validation: {
+        required: true
+      },
+      valid: false
     },
     country: {
       elementType: "input",
@@ -45,7 +61,11 @@ const ContactData = ({ingredients, price}) => {
         type: "text",
         placeholder: "Country"
       },
-      value: ""
+      value: "",
+      validation: {
+        required: true
+      },
+      valid: false
     },
     deliveryMethod: {
       elementType: "select",
@@ -61,7 +81,11 @@ const ContactData = ({ingredients, price}) => {
           }
         ]
       },
-      value: ""
+      value: "",
+      validation: {
+        required: true
+      },
+      valid: false
     }
   });
 
@@ -102,6 +126,16 @@ const ContactData = ({ingredients, price}) => {
     });
   }
 
+  function checkValidity(value, rules) {
+    let isValid = false;
+
+    if (rules.required) {
+      isValid = value.trim() !== "";
+    }
+
+    return isValid;
+  }
+
   function inputChangeHandler(event, inputField) {
     const currentInput = orderFormArray.find(order => order.id === inputField);
 
@@ -109,9 +143,15 @@ const ContactData = ({ingredients, price}) => {
       ...orderForm,
       [currentInput.id]: {
         ...orderForm[inputField],
-        value: event.target.value
+        value: event.target.value,
+        valid: checkValidity(
+          event.target.value,
+          orderForm[inputField].validation
+        )
       }
     });
+
+    console.log("orderForm", orderForm);
   }
 
   let form = (
