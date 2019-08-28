@@ -93,9 +93,13 @@ const ContactData = ({ingredients, price}) => {
   const [isFormValid, setFormValidation] = useState(false);
 
   useEffect(() => {
+    let isValid = true;
     for (let order in orderForm) {
-      setFormValidation(orderForm[order].valid);
+      if(!orderForm[order].valid) {
+        isValid = false;
+      }
     }
+    setFormValidation(isValid);
   }, [orderForm]);
 
   function orderHandler(event) {
@@ -112,8 +116,6 @@ const ContactData = ({ingredients, price}) => {
       price,
       customer
     };
-
-    console.log("orderForm", orderForm);
 
     if (isFormValid) {
       setLoading(true);
@@ -139,10 +141,9 @@ const ContactData = ({ingredients, price}) => {
 
   function checkValidity(value, rules) {
     if (rules.required) {
-      setFormValidation(value.trim() !== "");
+      return value.trim() !== "";
     }
-
-    return isFormValid;
+    return true;
   }
 
   async function inputChangeHandler(event, inputField) {
