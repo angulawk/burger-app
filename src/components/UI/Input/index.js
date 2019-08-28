@@ -11,6 +11,17 @@ const Input = ({label, elementType, elementConfig, value}) => {
     case "textarea":
       inputElem = <Input.TextArea {...elementConfig} value={value} />;
       break;
+    case "select":
+      inputElem = (
+        <Input.Select {...elementConfig} value={value}>
+          {elementConfig.options.map(option => (
+            <Input.SelectOption value={option.value}>
+              {option.value}
+            </Input.SelectOption>
+          ))}
+        </Input.Select>
+      );
+      break;
     default:
       inputElem = <Input.Container {...elementConfig} value={value} />;
       break;
@@ -45,5 +56,7 @@ Input.Container = styled.input`
 `;
 
 Input.TextArea = styled.textarea``;
+Input.Select = styled.select``;
+Input.SelectOption = styled.option``;
 
 export default Input;

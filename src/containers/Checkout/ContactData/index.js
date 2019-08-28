@@ -6,23 +6,23 @@ import Spinner from "../../../components/UI/Spinner";
 import Input from "../../../components/UI/Input";
 
 const ContactData = ({ingredients, price}) => {
-  const [username, setUsername] = useState({
-    elementType: "input",
-    elementConfig: {
-      type: "text",
-      placeholder: "Your name"
+  const [orderForm, setOrderForm] = useState({
+    name: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your name"
+      },
+      value: ""
     },
-    value: ""
-  });
-  const [email, setEmail] = useState({
-    elementType: "email",
-    elementConfig: {
-      type: "text",
-      placeholder: "Your email"
+    email: {
+      elementType: "email",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your email"
+      },
+      value: ""
     },
-    value: ""
-  });
-  const [address, setAddress] = useState({
     street: {
       elementType: "input",
       elementConfig: {
@@ -46,24 +46,23 @@ const ContactData = ({ingredients, price}) => {
         placeholder: "Country"
       },
       value: ""
-    }
-  });
-
-  const [deliveryMethod, setDeliveryMethod] = useState({
-    elementType: "select",
-    elementConfig: {
-      options: [
-        {
-          value: "fastest",
-          displayValue: "Fastest"
-        },
-        {
-          value: "cheapest",
-          displayValue: "Cheapest"
-        }
-      ]
     },
-    value: ""
+    deliveryMethod: {
+      elementType: "select",
+      elementConfig: {
+        options: [
+          {
+            value: "fastest",
+            displayValue: "Fastest"
+          },
+          {
+            value: "cheapest",
+            displayValue: "Cheapest"
+          }
+        ]
+      },
+      value: ""
+    }
   });
 
   const [loading, setLoading] = useState(false);
@@ -95,22 +94,25 @@ const ContactData = ({ingredients, price}) => {
       });
   }
 
+  let orderFormArray = [];
+
+  for (let order in orderForm) {
+    orderFormArray.push({
+      id: order,
+      config: orderForm[order]
+    });
+  }
+
   let form = (
     <ContactData.Form action="">
-      <Input elementType="" elementConfig="" value="" />
-      <Input
-        inputType="input"
-        type="email"
-        name="email"
-        placeholder="Your email"
-      />
-      <Input inputType="input" type="text" name="street" placeholder="Street" />
-      <Input
-        inputType="input"
-        type="text"
-        name="postal"
-        placeholder="Postalcode"
-      />
+      {orderFormArray.map(input => (
+        <Input
+          key={input.id}
+          elementType={input.config.elementType}
+          elementConfig={input.config.elementConfig}
+          value={input.config.value}
+        />
+      ))}
       <Button btnType="success" clicked={orderHandler}>
         Order
       </Button>
