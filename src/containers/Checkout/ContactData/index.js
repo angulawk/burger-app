@@ -70,18 +70,17 @@ const ContactData = ({ingredients, price}) => {
   function orderHandler(event) {
     event.preventDefault();
 
+    let customer = {};
+
+    for (let order in orderForm) {
+      customer[order] = orderForm[order].value;
+    }
+
     setLoading(true);
     const order = {
       ingredients,
       price,
-      customer: {
-        name: "Aga Wojcik",
-        address: {
-          street: "Test",
-          zipCode: "41400",
-          country: "Poland"
-        }
-      }
+      customer
     };
 
     axios
@@ -103,19 +102,31 @@ const ContactData = ({ingredients, price}) => {
     });
   }
 
+  function inputChangeHandler(event, inputField) {
+    const currentInput = orderFormArray.find(order => order.id === inputField);
+
+    setOrderForm({
+      ...orderForm,
+      [currentInput.id]: {
+        ...orderForm[inputField],
+        value: event.target.value
+      }
+    });
+  }
+
   let form = (
-    <ContactData.Form action="">
+    <ContactData.Form action="" onSubmit={orderHandler}>
       {orderFormArray.map(input => (
         <Input
           key={input.id}
           elementType={input.config.elementType}
           elementConfig={input.config.elementConfig}
           value={input.config.value}
+          changed={inputChangeHandler}
+          id={input.id}
         />
       ))}
-      <Button btnType="success" clicked={orderHandler}>
-        Order
-      </Button>
+      <Button btnType="success">Order</Button>
     </ContactData.Form>
   );
 

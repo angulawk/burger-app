@@ -1,29 +1,55 @@
 import React, {Fragment} from "react";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
-const Input = ({label, elementType, elementConfig, value}) => {
+const Input = ({label, elementType, elementConfig, value, changed, id}) => {
   let inputElem = null;
+
+  function handleInputChange(event) {
+    changed(event, id);
+  }
 
   switch (elementType) {
     case "input":
-      inputElem = <Input.Container {...elementConfig} value={value} />;
+      inputElem = (
+        <Input.BaseInput
+          {...elementConfig}
+          value={value}
+          onChange={handleInputChange}
+        />
+      );
       break;
     case "textarea":
-      inputElem = <Input.TextArea {...elementConfig} value={value} />;
+      inputElem = (
+        <Input.TextArea
+          {...elementConfig}
+          value={value}
+          onChange={handleInputChange}
+        />
+      );
       break;
     case "select":
       inputElem = (
-        <Input.Select {...elementConfig} value={value}>
+        <Input.Select
+          {...elementConfig}
+          value={value}
+          onChange={handleInputChange}
+        >
           {elementConfig.options.map(option => (
-            <Input.SelectOption value={option.value}>
-              {option.value}
+            <Input.SelectOption key={option.value} value={option.value}>
+              {option.displayValue}
             </Input.SelectOption>
           ))}
         </Input.Select>
       );
       break;
     default:
-      inputElem = <Input.Container {...elementConfig} value={value} />;
+      inputElem = (
+        <Input.BaseInput
+          {...elementConfig}
+          value={value}
+          onChange={handleInputChange}
+        />
+      );
       break;
   }
   return (
@@ -40,7 +66,7 @@ Input.Label = styled.label`
   margin-bottom: 8px;
 `;
 
-Input.Container = styled.input`
+const styledInput = css`
   display: block;
   width: 100%;
   outline: none;
@@ -48,6 +74,7 @@ Input.Container = styled.input`
   background-color: #fff;
   font: inherit;
   padding: 6px 10px;
+  box-sizing: border-box;
 
   :focus {
     outline: none;
@@ -55,8 +82,14 @@ Input.Container = styled.input`
   }
 `;
 
+Input.BaseInput = styled.input`
+  ${styledInput};
+`;
+
 Input.TextArea = styled.textarea``;
-Input.Select = styled.select``;
+Input.Select = styled.select`
+  ${styledInput};
+`;
 Input.SelectOption = styled.option``;
 
 export default Input;
