@@ -1,7 +1,15 @@
 import React, {Fragment} from "react";
 import styled, {css} from "styled-components";
 
-const Input = ({label, elementType, elementConfig, value, changed, id}) => {
+const Input = ({
+  label,
+  elementType,
+  elementConfig,
+  value,
+  changed,
+  id,
+  errorMessage
+}) => {
   let inputElem = null;
 
   function handleInputChange(event) {
@@ -56,6 +64,7 @@ const Input = ({label, elementType, elementConfig, value, changed, id}) => {
     <Fragment>
       <Input.Label>{label}</Input.Label>
       {inputElem}
+      {errorMessage}
     </Fragment>
   );
 };

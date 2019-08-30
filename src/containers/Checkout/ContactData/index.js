@@ -17,7 +17,8 @@ const ContactData = ({ingredients, price}) => {
       validation: {
         required: true
       },
-      valid: false
+      valid: false,
+      errorMessage: ""
     },
     email: {
       elementType: "email",
@@ -29,7 +30,8 @@ const ContactData = ({ingredients, price}) => {
       validation: {
         required: true
       },
-      valid: false
+      valid: false,
+      errorMessage: ""
     },
     street: {
       elementType: "input",
@@ -41,7 +43,8 @@ const ContactData = ({ingredients, price}) => {
       validation: {
         required: true
       },
-      valid: false
+      valid: false,
+      errorMessage: ""
     },
     postalCode: {
       elementType: "input",
@@ -53,7 +56,8 @@ const ContactData = ({ingredients, price}) => {
       validation: {
         required: true
       },
-      valid: false
+      valid: false,
+      errorMessage: ""
     },
     country: {
       elementType: "input",
@@ -65,7 +69,8 @@ const ContactData = ({ingredients, price}) => {
       validation: {
         required: true
       },
-      valid: false
+      valid: false,
+      errorMessage: ""
     },
     deliveryMethod: {
       elementType: "select",
@@ -85,17 +90,19 @@ const ContactData = ({ingredients, price}) => {
       validation: {
         required: true
       },
-      valid: false
+      valid: false,
+      errorMessage: ""
     }
   });
 
   const [loading, setLoading] = useState(false);
   const [isFormValid, setFormValidation] = useState(false);
+  const [vatidationErrorMessages, setValidationErrorMessages] = useState([]);
 
   useEffect(() => {
     let isValid = true;
     for (let order in orderForm) {
-      if(!orderForm[order].valid) {
+      if (!orderForm[order].valid) {
         isValid = false;
       }
     }
@@ -123,10 +130,29 @@ const ContactData = ({ingredients, price}) => {
         .post("/orders.json", order)
         .then(response => {
           setLoading(false);
+          setValidationErrorMessages([]);
         })
         .catch(error => {
           setLoading(false);
         });
+    } else {
+      // orderFormArray
+      //   .filter(order => !order.config.valid)
+      //   .map(order => {
+      //     return errorMessages.push({
+      //       name: order.id,
+      //       errorMessage: "Field is required"
+      //     });
+      //   });
+      const orderFormCopy = {...orderForm};
+      for (let order in orderFormCopy) {
+        console.log("orderFormCopy[order]", orderFormCopy[order]);
+        if (!orderFormCopy[order].valid) {
+          orderFormCopy[order].errorMessage = "Field is required";
+        }
+      }
+
+      setOrderForm(orderFormCopy);
     }
   }
 
@@ -135,7 +161,8 @@ const ContactData = ({ingredients, price}) => {
   for (let order in orderForm) {
     orderFormArray.push({
       id: order,
-      config: orderForm[order]
+      config: orderForm[order],
+      errorMessage: orderForm[order].errorMessage
     });
   }
 
@@ -174,6 +201,7 @@ const ContactData = ({ingredients, price}) => {
           value={input.config.value}
           changed={inputChangeHandler}
           id={input.id}
+          errorMessage={input.errorMessage}
         />
       ))}
       <Button btnType="success">Order</Button>
