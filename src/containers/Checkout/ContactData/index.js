@@ -136,14 +136,6 @@ const ContactData = ({ingredients, price}) => {
           setLoading(false);
         });
     } else {
-      // orderFormArray
-      //   .filter(order => !order.config.valid)
-      //   .map(order => {
-      //     return errorMessages.push({
-      //       name: order.id,
-      //       errorMessage: "Field is required"
-      //     });
-      //   });
       const orderFormCopy = {...orderForm};
       for (let order in orderFormCopy) {
         console.log("orderFormCopy[order]", orderFormCopy[order]);
