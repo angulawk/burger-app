@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner";
 import Input from "../../../components/UI/Input";
+import changeOrderFormObjIntoArray from "../../../utils/changeOrderFormObjIntoArray";
 
 const ContactData = ({ingredients, price}) => {
   const [orderForm, setOrderForm] = useState({
@@ -97,7 +98,7 @@ const ContactData = ({ingredients, price}) => {
 
   const [loading, setLoading] = useState(false);
   const [isFormValid, setFormValidation] = useState(false);
-  const [vatidationErrorMessages, setValidationErrorMessages] = useState([]);
+  let orderFormArray = changeOrderFormObjIntoArray(orderForm);
 
   useEffect(() => {
     let isValid = true;
@@ -116,6 +117,12 @@ const ContactData = ({ingredients, price}) => {
 
     for (let order in orderForm) {
       customer[order] = orderForm[order].value;
+
+      if (isFormValid) {
+        if (orderForm[order].valid) {
+          orderForm[order].errorMessage = "";
+        }
+      }
     }
 
     const order = {
@@ -126,11 +133,11 @@ const ContactData = ({ingredients, price}) => {
 
     if (isFormValid) {
       setLoading(true);
+      setOrderForm(orderForm);
       axios
         .post("/orders.json", order)
         .then(response => {
           setLoading(false);
-          setValidationErrorMessages([]);
         })
         .catch(error => {
           setLoading(false);
@@ -138,7 +145,6 @@ const ContactData = ({ingredients, price}) => {
     } else {
       const orderFormCopy = {...orderForm};
       for (let order in orderFormCopy) {
-        console.log("orderFormCopy[order]", orderFormCopy[order]);
         if (!orderFormCopy[order].valid) {
           orderFormCopy[order].errorMessage = "Field is required";
         }
@@ -146,16 +152,6 @@ const ContactData = ({ingredients, price}) => {
 
       setOrderForm(orderFormCopy);
     }
-  }
-
-  let orderFormArray = [];
-
-  for (let order in orderForm) {
-    orderFormArray.push({
-      id: order,
-      config: orderForm[order],
-      errorMessage: orderForm[order].errorMessage
-    });
   }
 
   function checkValidity(value, rules) {
@@ -183,31 +179,27 @@ const ContactData = ({ingredients, price}) => {
     return orderForm;
   }
 
-  let form = (
-    <ContactData.Form action="" onSubmit={orderHandler}>
-      {orderFormArray.map(input => (
-        <Input
-          key={input.id}
-          elementType={input.config.elementType}
-          elementConfig={input.config.elementConfig}
-          value={input.config.value}
-          changed={inputChangeHandler}
-          id={input.id}
-          errorMessage={input.errorMessage}
-        />
-      ))}
-      <Button btnType="success">Order</Button>
-    </ContactData.Form>
-  );
-
-  if (loading) {
-    form = <Spinner />;
-  }
-
   return (
     <ContactData.Container>
       <h4>Enter your Contact Data</h4>
-      {form}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <ContactData.Form action="" onSubmit={orderHandler}>
+          {orderFormArray.map(input => (
+            <Input
+              key={input.id}
+              elementType={input.config.elementType}
+              elementConfig={input.config.elementConfig}
+              value={input.config.value}
+              changed={inputChangeHandler}
+              id={input.id}
+              errorMessage={input.errorMessage}
+            />
+          ))}
+          <Button btnType="success">Order</Button>
+        </ContactData.Form>
+      )}
     </ContactData.Container>
   );
 };
